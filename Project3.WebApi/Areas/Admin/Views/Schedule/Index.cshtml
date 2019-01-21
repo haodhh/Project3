@@ -1,0 +1,517 @@
+﻿@using System.Collections;
+@using Project3.Data.Database;
+
+@model Project3.WebApi.Areas.Admin.Models.ScheduleModel
+@{
+    ViewBag.Title = "Quản lý Thời khóa biểu";
+    Layout = "~/Areas/Admin/Views/Shared/layoutAdmin.cshtml";
+
+    var n = 0;
+
+    var listSchedule = Model.listSchedule;
+    var listTeacher = Model.listTeacher;
+    var listStudent = Model.listStudent;
+    var listCar = Model.listCar;
+}
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Quản lý Thời khóa biểu (có tối đa 5 lớp học trong cùng một kíp học)
+            </div>
+            <!-- /.panel-heading -->
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Mã lớp</th>
+                                <th>Kíp học</th>
+                                <th>Ngày</th>
+                                <th>Tháng</th>
+                                <th>Năm</th>
+                                <th>Xe</th>
+                                <th>Học viên</th>
+                                <th>Giáo viên</th>
+                                <th style="color:red">@Html.ValidationMessage("error")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>0</b></td>
+                                <td><input id="addCode" class="form-control"></td>
+                                <td>
+                                    <select class="form-control" id="addHour">
+                                        <option value="0">Not Set</option>
+                                        <option value="1">Kíp 1</option>
+                                        <option value="2">Kíp 2</option>
+                                        <option value="3">Kíp 3</option>
+                                        <option value="4">Kíp 4</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="addDay">
+                                        <option value="0">Not Set</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="addMonth">
+                                        <option value="0">Not Set</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="addYear">
+                                        <option value="0">Not Set</option>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2019">2019</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="addIDCar">
+                                        <option value="0">Not Set</option>
+                                        @foreach (var item in listCar)
+                                        {
+                                            <option value="@item.ID">
+                                                @{ if (item.Type == 0)
+                                                    {
+                                                        <p>Xe 4 chỗ, BKS: @item.NumberCar</p>
+                                                    }
+                                                    else if (item.Type == 1)
+                                                    {
+                                                        <p>Xe 8 chỗ, BKS: @item.NumberCar</p>
+                                                    }
+                                                    else if (item.Type == 2)
+                                                    {
+                                                        <p>Xe 16 chỗ, BKS: @item.NumberCar</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>Xe 32 chỗ, BKS: @item.NumberCar</p>
+                                                    }
+                                                }
+                                            </option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="addIDStudent">
+                                        <option value="0">Not Set</option>
+                                        @foreach (var item in listStudent)
+                                        {
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="addIDTeacher">
+                                        <option value="0">Not Set</option>
+                                        @foreach (var item in listTeacher)
+                                        {
+                                            <option value="@item.ID">@item.Name</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td width="126px"><center><button onclick="addFunction()" type="button" class="btn btn-primary">Add</button>&nbsp;<button onclick="findFunction()" type="button" class="btn btn-primary">Find</button></center></td>
+                            </tr>
+                            @foreach (var item in listSchedule)
+                            {
+                                if (item.Status != -1)
+                                {
+                                    continue;
+                                }
+                                n++;
+                                <tr>
+                                    <td><b>@n</b></td>
+                                    <td>
+                                        <div id="10+@item.ID">@item.Code</div>
+                                        <div id="11+@item.ID" style="display:none;">
+                                            <input id="12+@item.ID" class="form-control" value="@item.Code">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="20+@item.ID">@item.Hour</div>
+                                        <div id="21+@item.ID" style="display:none;">
+                                            <select class="form-control" id="22+@item.ID" value="@item.Hour">
+                                                <option value="1">Kíp 1</option>
+                                                <option value="2">Kíp 2</option>
+                                                <option value="3">Kíp 3</option>
+                                                <option value="4">Kíp 4</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="30+@item.ID">@item.Day</div>
+                                        <div id="31+@item.ID" style="display:none;">
+                                            <select class="form-control" id="32+@item.ID" value="@item.Day">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                <option value="31">31</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="40+@item.ID">@item.Month</div>
+                                        <div id="41+@item.ID" style="display:none;">
+                                            <select class="form-control" id="42+@item.ID" value="@item.Month">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="50+@item.ID">@item.Year</div>
+                                        <div id="51+@item.ID" style="display:none;">
+                                            <select class="form-control" id="52+@item.ID" value="@item.Year">
+                                                <option value="2016">2016</option>
+                                                <option value="2017">2017</option>
+                                                <option value="2018">2018</option>
+                                                <option value="2019">2019</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="60+@item.ID">
+                                            @{
+                                                if (item.IDCar == 0)
+                                                {
+                                                    <p>Not Set</p>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var item2 in listCar)
+                                                    {
+                                                        if (item2.ID == item.IDCar)
+                                                        {
+                                                            if (item2.Type == 0)
+                                                            {
+                                                                <p>Xe 4 chỗ, BKS: @item2.NumberCar</p>
+                                                                break;
+                                                            }
+                                                            else if (item2.Type == 1)
+                                                            {
+                                                                <p>Xe 8 chỗ, BKS: @item2.NumberCar</p>
+                                                                break;
+                                                            }
+                                                            else if (item2.Type == 2)
+                                                            {
+                                                                <p>Xe 16 chỗ, BKS: @item2.NumberCar</p>
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>Xe 32 chỗ, BKS: @item2.NumberCar</p>
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                        <div id="61+@item.ID" style="display:none;">
+                                            <select class="form-control" id="62+@item.ID">
+                                                <option value="0">Not Set</option>
+                                                @foreach (var item3 in listCar)
+                                                {
+                                                    <option value="@item3.ID">
+                                                        @{ if (item3.Type == 0)
+                                                            {
+                                                                <p>Xe 4 chỗ, BKS: @item3.NumberCar</p>
+                                                            }
+                                                            else if (item3.Type == 1)
+                                                            {
+                                                                <p>Xe 8 chỗ, BKS: @item3.NumberCar</p>
+                                                            }
+                                                            else if (item3.Type == 2)
+                                                            {
+                                                                <p>Xe 16 chỗ, BKS: @item3.NumberCar</p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p>Xe 32 chỗ, BKS: @item3.NumberCar</p>
+                                                            }
+                                                        }
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="70+@item.ID">
+                                            @{
+                                                if (item.IDStudent == 0)
+                                                {
+                                                    <p>Not Set</p>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var item2 in listStudent)
+                                                    {
+                                                        if (item2.ID == item.IDStudent)
+                                                        {
+                                                            <p>@item2.Name</p>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                        <div id="71+@item.ID" style="display:none;">
+                                            <select class="form-control" id="72+@item.ID">
+                                                <option value="0">Not Set</option>
+                                                @foreach (var item3 in listStudent)
+                                                {
+                                                    <option value="@item3.ID">@item3.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="80+@item.ID">
+                                            @{
+                                                if (item.IDTeacher == 0)
+                                                {
+                                                    <p>Not Set</p>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var item2 in listTeacher)
+                                                    {
+                                                        if (item2.ID == item.IDTeacher)
+                                                        {
+                                                            <p>@item2.Name</p>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                        <div id="81+@item.ID" style="display:none;">
+                                            <select class="form-control" id="82+@item.ID">
+                                                <option value="0">Not Set</option>
+                                                @foreach (var item3 in listTeacher)
+                                                {
+                                                    <option value="@item3.ID">@item3.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <center>
+                                            <div id="00+@item.ID">
+                                                <button onclick="editFunction(@item.ID)" type="button" class="btn btn-primary">Edit</button>&nbsp;<button onclick="delFunction(@item.ID)" type="button" class="btn btn-primary">Del</button>
+                                            </div>
+                                            <div id="01+@item.ID" style="display:none;">
+                                                <button onclick="okeditFunction(@item.ID)" type="button" class="btn btn-primary">OK</button>&nbsp;<button onclick="cancelFunction(@item.ID)" type="button" class="btn btn-primary">Hủy</button>
+                                            </div>
+                                        </center>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<script>
+
+    function addFunction() {
+        var e1 = document.getElementById("addCode").value;
+        var e2 = document.getElementById("addHour");
+        var q2 = e2.options[e2.selectedIndex].value;
+        var e3 = document.getElementById("addDay");
+        var q3 = e3.options[e3.selectedIndex].value;
+        var e4 = document.getElementById("addMonth");
+        var q4 = e4.options[e4.selectedIndex].value;
+        var e5 = document.getElementById("addYear");
+        var q5 = e5.options[e5.selectedIndex].value;
+        var e6 = document.getElementById("addIDCar");
+        var q6 = e6.options[e6.selectedIndex].value;
+        var e7 = document.getElementById("addIDStudent");
+        var q7 = e7.options[e7.selectedIndex].value;
+        var e8 = document.getElementById("addIDTeacher");
+        var q8 = e8.options[e8.selectedIndex].value;
+        var hrefCreat = "/Admin/Schedule/Create?code="+ e1 +"&hour=" + q2 + "&day=" + q3 + "&month=" + q4 + "&year=" + q5 + "&idCar=" + q6 + "&idStudent=" + q7 + "&idTeacher=" + q8;
+        location.href = hrefCreat;
+    }
+
+    function findFunction() {
+        var e1 = document.getElementById("addCode").value;
+        var e2 = document.getElementById("addHour");
+        var q2 = e2.options[e2.selectedIndex].value;
+        var e3 = document.getElementById("addDay");
+        var q3 = e3.options[e3.selectedIndex].value;
+        var e4 = document.getElementById("addMonth");
+        var q4 = e4.options[e4.selectedIndex].value;
+        var e5 = document.getElementById("addYear");
+        var q5 = e5.options[e5.selectedIndex].value;
+        var e6 = document.getElementById("addIDCar");
+        var q6 = e6.options[e6.selectedIndex].value;
+        var e7 = document.getElementById("addIDStudent");
+        var q7 = e7.options[e7.selectedIndex].value;
+        var e8 = document.getElementById("addIDTeacher");
+        var q8 = e8.options[e8.selectedIndex].value;
+        var hrefCreat = "/Admin/Schedule/Find?code="+ e1 +"&hour=" + q2 + "&day=" + q3 + "&month=" + q4 + "&year=" + q5 + "&idCar=" + q6 + "&idStudent=" + q7 + "&idTeacher=" + q8;
+        location.href = hrefCreat;
+    }
+
+    function editFunction(itemID) {
+        document.getElementById("10+" + itemID).style.display = 'none';
+        document.getElementById("11+" + itemID).style.display = 'block';
+        document.getElementById("20+" + itemID).style.display = 'none';
+        document.getElementById("21+" + itemID).style.display = 'block';
+        document.getElementById("30+" + itemID).style.display = 'none';
+        document.getElementById("31+" + itemID).style.display = 'block';
+        document.getElementById("40+" + itemID).style.display = 'none';
+        document.getElementById("41+" + itemID).style.display = 'block';
+        document.getElementById("50+" + itemID).style.display = 'none';
+        document.getElementById("51+" + itemID).style.display = 'block';
+        document.getElementById("60+" + itemID).style.display = 'none';
+        document.getElementById("61+" + itemID).style.display = 'block';
+        document.getElementById("70+" + itemID).style.display = 'none';
+        document.getElementById("71+" + itemID).style.display = 'block';
+        document.getElementById("80+" + itemID).style.display = 'none';
+        document.getElementById("81+" + itemID).style.display = 'block';
+        document.getElementById("00+" + itemID).style.display = 'none';
+        document.getElementById("01+" + itemID).style.display = 'block';
+    }
+
+    function okeditFunction(itemID) {
+        var e1 = document.getElementById("12+" + itemID).value;
+        var e2 = document.getElementById("22+" + itemID);
+        var q2 = e2.options[e2.selectedIndex].value;
+        var e3 = document.getElementById("32+" + itemID);
+        var q3 = e3.options[e3.selectedIndex].value;
+        var e4 = document.getElementById("42+" + itemID);
+        var q4 = e4.options[e4.selectedIndex].value;
+        var e5 = document.getElementById("52+" + itemID);
+        var q5 = e5.options[e5.selectedIndex].value;
+        var e6 = document.getElementById("62+" + itemID);
+        var q6 = e6.options[e6.selectedIndex].value;
+        var e7 = document.getElementById("72+" + itemID);
+        var q7 = e7.options[e7.selectedIndex].value;
+        var e8 = document.getElementById("82+" + itemID);
+        var q8 = e8.options[e8.selectedIndex].value;
+        var hrefEdit = "/Admin/Schedule/Edit?id=" + itemID +"&code="+ e1 +"&hour=" + q2 + "&day=" + q3 + "&month=" + q4 + "&year=" + q5 + "&idCar=" + q6 + "&idStudent=" + q7 + "&idTeacher=" + q8;
+        location.href = hrefEdit;
+    }
+
+    function cancelFunction(itemID) {
+        document.getElementById("10+" + itemID).style.display = 'block';
+        document.getElementById("11+" + itemID).style.display = 'none';
+        document.getElementById("20+" + itemID).style.display = 'block';
+        document.getElementById("21+" + itemID).style.display = 'none';
+        document.getElementById("30+" + itemID).style.display = 'block';
+        document.getElementById("31+" + itemID).style.display = 'none';
+        document.getElementById("40+" + itemID).style.display = 'block';
+        document.getElementById("41+" + itemID).style.display = 'none';
+        document.getElementById("50+" + itemID).style.display = 'block';
+        document.getElementById("51+" + itemID).style.display = 'none';
+        document.getElementById("60+" + itemID).style.display = 'block';
+        document.getElementById("61+" + itemID).style.display = 'none';
+        document.getElementById("70+" + itemID).style.display = 'block';
+        document.getElementById("71+" + itemID).style.display = 'none';
+        document.getElementById("80+" + itemID).style.display = 'block';
+        document.getElementById("81+" + itemID).style.display = 'none';
+        document.getElementById("00+" + itemID).style.display = 'block';
+        document.getElementById("01+" + itemID).style.display = 'none';
+    }
+
+    function delFunction(itemID) {
+        if (confirm("Xóa bản ghi!")) {
+            var hrefDel = "/Admin/Schedule/Delete?id=" + itemID;
+            location.href = hrefDel;
+        }
+    }
+</script>

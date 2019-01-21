@@ -1,0 +1,203 @@
+﻿@using System.Collections;
+@using Project3.Data.Database;
+
+@model Project3.Data.OtherModel.ClassModel
+@{
+    ViewBag.Title = "Trạng thái thời khóa biểu";
+    Layout = "~/Areas/StudentHD/Views/Shared/layout.cshtml";
+
+    var listSchedule = Model.schedule;
+    var month = Model.month;
+    var year = Model.year;
+}
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Trạng thái danh sách lớp : Tháng @month - Năm @year
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table border="0">
+                        <tr>
+                            <td>Tháng:&nbsp;</td>
+                            <td>
+                                <select class="form-control" id="searchMonth">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;Năm:&nbsp;</td>
+                            <td>
+                                <select class="form-control" id="searchYear">
+                                    <option value="2016">2016</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                </select>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary" onclick="searchFunction()">Search</button></td>
+                        </tr>
+                    </table>
+                    <br />
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>01</th>
+                                <th>02</th>
+                                <th>03</th>
+                                <th>04</th>
+                                <th>05</th>
+                                <th>06</th>
+                                <th>07</th>
+                                <th>08</th>
+                                <th>09</th>
+                                <th>10</th>
+                                <th>11</th>
+                                <th>12</th>
+                                <th>13</th>
+                                <th>14</th>
+                                <th>15</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+                                for (int i = 1; i < 5; i++)
+                                {
+                                    <tr>
+                                        <td>Kíp @i</td>
+                                        @for (int j = 1; j < 16; j++)
+                                        {
+                                            int k = 0;
+                                            int l = 0;
+                                            foreach (var item in listSchedule)
+                                            {
+                                                if (item.Hour == i && item.Day == j)
+                                                {
+                                                    l++;
+                                                    if (item.IDStudent == 0 && item.IDCar != 0)
+                                                    {
+                                                        k++;
+                                                    }
+                                                }
+
+                                            }
+                                            if (k == 0 && l == 0)
+                                            {
+                                                <td><button onclick="detailFunction(@i,@j,@month, @year)" type="button" class="btn btn-default">@k / @l</button></td>
+                                            }
+                                            else if (k == 0 && l != 0)
+                                            {
+                                                <td><button onclick="detailFunction(@i,@j,@month, @year)" type="button" class="btn btn-danger">@k / @l</button></td>
+                                            }
+                                            else
+                                            {
+                                                <td><button onclick="detailFunction(@i,@j,@month, @year)" type="button" class="btn btn-success">@k / @l</button></td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>16</th>
+                                <th>17</th>
+                                <th>18</th>
+                                <th>19</th>
+                                <th>20</th>
+                                <th>21</th>
+                                <th>22</th>
+                                <th>23</th>
+                                <th>24</th>
+                                <th>25</th>
+                                <th>26</th>
+                                <th>27</th>
+                                <th>28</th>
+                                <th>29</th>
+                                <th>30</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+                                for (int i = 1; i < 5; i++)
+                                {
+                                    <tr>
+                                        <td>Kíp @i</td>
+                                        @for (int j = 16; j < 31; j++)
+                                        {
+                                            int k = 0;
+                                            int l = 0;
+                                            foreach (var item in listSchedule)
+                                            {
+                                                if (item.Hour == i && item.Day == j)
+                                                {
+                                                    l++;
+                                                    if (item.IDStudent == 0 && item.IDCar != 0)
+                                                    {
+                                                        k++;
+                                                    }
+                                                }
+                                            }
+                                            if (k == 0 && l == 0)
+                                            {
+                                                <td><button onclick="detailFunction(@i,@j,@month, @year)" type="button" class="btn btn-default">@k / @l</button></td>
+                                            }
+                                            else if (k == 0 && l != 0)
+                                            {
+                                                <td><button onclick="detailFunction(@i,@j,@month, @year)" type="button" class="btn btn-danger">@k / @l</button></td>
+                                            }
+                                            else
+                                            {
+                                                <td><button onclick="detailFunction(@i,@j,@month, @year)" type="button" class="btn btn-success">@k / @l</button></td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<script>
+    function searchFunction() {
+        var e1 = document.getElementById("searchMonth");
+        var month = e1.options[e1.selectedIndex].value;
+        var e2 = document.getElementById("searchYear");
+        var year = e2.options[e2.selectedIndex].value;
+        var hrefSearch = "/StudentHD/Class/Index?month=" + month + "&year=" + year;
+        location.href = hrefSearch;
+    }
+
+    function detailFunction(i, j, m, n) {
+        var hrefDetail = "/StudentHD/Class/Detail?hour=" + i + "&day=" + j + "&month=" + m + "&year=" + n;
+        location.href = hrefDetail;
+    }
+</script>

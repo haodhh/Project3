@@ -1,0 +1,60 @@
+﻿
+
+<div class="wrap-map1">
+    <div class="col-lg-9 full-height" style="padding:0px;" id="divMap">
+        <div id="map"></div>
+    </div>
+    <div class="col-lg-3 full-height detail-tab">
+        <div class="history-search" style="display: none">
+            <input class="date-time" name="date_of_birth" data-format="DD-MM-YYYY" data-template="D MMM YYYY">
+            <div class="finding-history">Xem lịch sử</div>
+        </div>
+
+        <div class="title-list-cars">
+        </div>
+        <div class="wrap-list-car">
+            <table class="table" style="margin-left:0px; padding-left:0px; max-height: 350px;">
+                <thead>
+                </thead>
+                <tbody class="list-cars"></tbody>
+            </table>
+        </div>
+
+        <br />
+        <div class="wrap-detail">
+            <table class="table" style="margin-left:0px; padding-left:0px; max-height: 350px;">
+                <thead>
+                    <tr>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="speed">Tốc độ</td>
+                    </tr>
+                    <tr>
+                        <td class="location">Vị trí</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="sub-wrap">
+            <div class="sub-item">
+                <span class="icon-normal"></span>
+                <span class="text">Bình thường</span>
+            </div>
+            <div class="sub-item">
+                <span class="icon-infringe"></span>
+                <span class="text">Vi phạm</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var typeMap = "@ViewBag.text";
+</script>

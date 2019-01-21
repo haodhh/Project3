@@ -1,0 +1,153 @@
+﻿@using System.Collections;
+@using Project3.Data.Database;
+
+@model Project3.Data.OtherModel.DetailScheduleStudent
+@{
+    ViewBag.Title = "Danh sách lớp đã đăng ký";
+    Layout = "~/Areas/StudentHD/Views/Shared/layout.cshtml";
+
+    var n = 0;
+    var listSchedule = Model.listSchedule;
+    var listCar = Model.listCar;
+    var listStudent = Model.listStudent;
+    var listTeacher = Model.listTeacher;
+    var hour = Model.hour;
+    var day = Model.day;
+    var month = Model.month;
+    var year = Model.year;
+}
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách lớp đã đăng ký
+            </div>
+            <!-- /.panel-heading -->
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Mã lớp</th>
+                                <th>Kíp học</th>
+                                <th>Ngày</th>
+                                <th>Tháng</th>
+                                <th>Năm</th>
+                                <th>Xe</th>
+                                <th>Học viên</th>
+                                <th>Giáo viên</th>
+                                <th>@Html.ValidationMessage("error")</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in listSchedule)
+                            {
+                                n++;
+                                <tr>
+                                    <td><b>@n</b></td>
+                                    <td>@item.Code</td>
+                                    <td>@item.Hour</td>
+                                    <td>@item.Day</td>
+                                    <td>@item.Month</td>
+                                    <td>@item.Year</td>
+                                    <td>
+                                        @{
+                                            if (item.IDCar == 0)
+                                            {
+                                                <p>Not Set</p>
+                                            }
+                                            else
+                                            {
+                                                foreach (var item2 in listCar)
+                                                {
+                                                    if (item2.ID == item.IDCar)
+                                                    {
+                                                        if (item2.Type == 0)
+                                                        {
+                                                            <p>Xe 4 chỗ, BKS: @item2.NumberCar</p>
+                                                            break;
+                                                        }
+                                                        else if (item2.Type == 1)
+                                                        {
+                                                            <p>Xe 8 chỗ, BKS: @item2.NumberCar</p>
+                                                            break;
+                                                        }
+                                                        else if (item2.Type == 2)
+                                                        {
+                                                            <p>Xe 16 chỗ, BKS: @item2.NumberCar</p>
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>Xe 32 chỗ, BKS: @item2.NumberCar</p>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (item.IDStudent == 0)
+                                            {
+                                                <p>Not Set</p>
+                                            }
+                                            else
+                                            {
+                                                foreach (var item2 in listStudent)
+                                                {
+                                                    if (item2.ID == item.IDStudent)
+                                                    {
+                                                        <p>@item2.Name</p>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (item.IDTeacher == 0)
+                                            {
+                                                <p>Not Set</p>
+                                            }
+                                            else
+                                            {
+                                                foreach (var item2 in listTeacher)
+                                                {
+                                                    if (item2.ID == item.IDTeacher)
+                                                    {
+                                                        <p>@item2.Name</p>
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                    <td width="10px">
+                                        <button onclick="registerFunction(@item.ID)" type="button" class="btn btn-primary">Hủy đăng ký</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<script>
+    function registerFunction(itemID) {
+        var href = "/StudentHD/Register/CancelRegister?id=" + itemID;
+        location.href = href;
+    }
+</script>
